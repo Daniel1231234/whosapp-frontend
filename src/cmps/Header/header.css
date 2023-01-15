@@ -1,0 +1,31 @@
+.homeHeader {
+    height: 10vh;
+    color: white;
+    background-color: black;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.logo {
+    font-size: 2rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline-end: 30px;
+    margin-inline-start: 30px;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.hideHeader {
+    display: none;
+}

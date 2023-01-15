@@ -1,0 +1,181 @@
+
+.chatContainer {
+    height: 100vh;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #393E46;
+    color: #F2E7D5;
+    display: flex;
+}
+
+/* Room and users component */
+.roomAndUsersColumn {
+    background-color: #222831;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding:1rem 2rem;
+}
+
+
+
+.usersList {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 60px;
+    color: rgb(153, 217, 234);
+}
+
+.usersList li {
+    margin-bottom: 12px;
+}
+
+/* Messages */
+.messagesContainer {
+    width: 100%;
+    margin-inline: 2rem;
+}
+
+.messagesColumn {
+    height: 80vh;
+    margin-block: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+    /* width: 100%; */
+}
+
+.message-container {
+    background: #515361;
+    margin-bottom: 24px;
+    box-shadow: rgb(0 0 0 / 40%) 0px 2px 4px, rgb(0 0 0 / 30%) 0px 7px 13px -3px, rgb(0 0 0 / 20%) 0px -3px 0px inset;
+    padding: 16px;
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+
+.msgMeta {
+    color: rgb(153, 217, 234);
+    font-size: 0.9rem;
+}
+
+.msgText {
+    color: #fff;
+    line-height: 1.2;
+    margin:0;
+    font-size: 1.2em;
+}
+
+.sendMessageContainer {
+    position: relative;
+    display: flex;
+    gap:10px;
+
+}
+
+.modal-container {
+    position: fixed;
+    top: 20vh;
+    left: 5%;
+    width: 90%;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    z-index: 30;
+    animation: slide-down 300ms ease-out forwards;
+}
+
+.modal-context {
+    padding:1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lightslategrey {
+    background-color: #585c78;
+}
+
+
+
+
+@media (max-width: 600px) {
+    .chatContainer {
+        display: flex;
+        justify-content: center;
+    }
+
+    .roomAndUsersColumn {
+        position: fixed;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        top: 0;
+        left: 0;
+        justify-content: space-between;
+        align-items: center;
+        height: 3rem;
+        padding: 2.2rem;
+        border-bottom: 1px solid;
+        border-right: none;
+    }
+
+
+    .roomTitle {
+        margin: 0;
+        font-size: 2rem !important;
+    }
+
+    .messagesContainer {
+        width: 90%;
+    }
+
+
+    .message-container:first-child {
+        margin-top: 5rem;
+    }
+
+    .modal-container {
+        width:40rem;
+        left:calc(50% - 20rem)
+    }
+
+    .divider {
+        display:none;
+    }
+
+    .usersList {
+        display:none;
+    }
+}
