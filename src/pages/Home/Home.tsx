@@ -7,13 +7,15 @@ import { UsersContext } from '../../store/UserContext';
 import { WebsocketContext } from '../../store/SocketContext';
 import { Button, Text } from '@chakra-ui/react'
 
+
 export function Home() {
   const [show, setShow] = useState(false)
   const userCtx = useContext(UsersContext)
+
   const user = userCtx.user()
   const socket = useContext(WebsocketContext);
 
-  
+
   useEffect(() => {
     userCtx.setShowHeader(true)
   }, [])
@@ -27,7 +29,7 @@ export function Home() {
         {show && <Button  size="md" onClick={() => { setShow(false) }} colorScheme='red'>Back</Button> }
       </div>
       <div className='formContainer'>
-        {show && <NewChatRoom setShow={setShow}  />}
+        {show && <NewChatRoom setShow={setShow}    />}
         {!show && <RoomSelect socket={socket} />}
       </div>
     </div>

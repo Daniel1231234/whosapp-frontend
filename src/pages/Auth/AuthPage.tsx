@@ -13,10 +13,10 @@ export const AuthPage = () => {
       return (
         <div className="auth-page pageContainer main-layout">
           <Heading fontSize='4xl' className="auth-title">Welcome to Who's App!</Heading>
-          <Text
+          <Text textAlign="center"
             bgGradient='linear(to-l, #7928CA, #FF0080)'
             bgClip='text'
-            fontSize='1xl'
+            fontSize='medium'
             fontWeight='bold'
           >{signup ? 'Sign up' : 'Log in'} to our service and start chatting!</Text>
               {!signup && <Login setSignup={setSignup} /> }

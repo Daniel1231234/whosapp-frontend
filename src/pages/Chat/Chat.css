@@ -159,6 +159,7 @@
 
     .messagesContainer {
         width: 90%;
+        margin-inline: 0;
     }
 
 

@@ -7,6 +7,7 @@ import { UsersContext } from "./store/UserContext"
 import { WebsocketProvider, socket } from "./store/SocketContext"
 import { AuthContext } from "./store/AuthContext"
 import { User } from "./models/User"
+import { storageService } from "./services/localStorageService"
 
 const PrivateRoutesWithWebsocket = () => {
     return (
@@ -21,16 +22,14 @@ export const AppRouter = () => {
     const userCtx = useContext(UsersContext)
     const user =  userCtx.user()
     const { isAuth } = useContext(AuthContext)
-    
-
-    
+    const token = storageService.loadFromStorage('token')
     
     return (
         <>
             {userCtx.showHeader && <AppHeader />}
             <Routes>
                 {
-                isAuth || user ?
+                token && user ?
                     <Route path="/*" element={<PrivateRoutesWithWebsocket />} /> :
                     <Route path="/*" element={<PublicRoutes />} />
                 }    

@@ -1,9 +1,7 @@
 import {useContext, useState} from "react"
 import './Auth.css'
-import { UsersContext } from "../../store/UserContext"
 import { AuthContext } from "../../store/AuthContext"
 import { useToastMsg } from "../../cmps/UI/Toast/useToastMsg"
-import { toastContent } from "../../cmps/UI/Toast/toastContent"
 
 type Props = {
   setSignup:any
@@ -19,11 +17,19 @@ export const Signup = (props: Props) => {
   const toastSignupErr = useToastMsg({ status: 'error', title: 'Sign up has failed', description: 'Username or Password are invalid', isShow: true })
 
 
-  const signupHandker = () => {
+  const signupHandker = async () => {
     try {
       if (email.trim() === "" || password.trim() === "" || name.trim() === "") return toastSignupErr.showToast()
       let capitalizeName = capitalizeWords(name) 
-      signUp(capitalizeName, password.toLowerCase(), email.toLowerCase())
+      const isValid = await signUp(capitalizeName, password.toLowerCase(), email.toLowerCase())
+      console.log(isValid)
+      
+      if (isValid === 'Email is allready exist') {
+        setEmail("")
+        setPassword("")
+        setName("")
+        return
+      }
       props.setSignup(false)
     } catch (err) {
       console.log(err)

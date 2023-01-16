@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { Socket } from "socket.io-client"
 import { useToastMsg } from "../../cmps/UI/Toast/useToastMsg"
 import { Chat } from "../../models/Chat"
-import { User } from "../../models/User"
 import { ChatsContext } from "../../store/ChatContext"
 import { UsersContext } from "../../store/UserContext"
 import './Home.css'

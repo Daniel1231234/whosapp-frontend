@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toastContent } from '../cmps/UI/Toast/toastContent';
 import { useToastMsg } from '../cmps/UI/Toast/useToastMsg';
 import { Chat } from '../models/Chat';
 import  {User} from '../models/User';
@@ -14,6 +15,7 @@ type UsersContextObj = {
   setShowHeader: (showHeader: boolean) => void
   addUserRoom: (newChatRoom: Chat) => void
   deleteUserRoom: (roomId: string) => void
+  updateUser: (name:string, email:string) => any
 };
 
 export const UsersContext = React.createContext<UsersContextObj>({
@@ -23,6 +25,7 @@ export const UsersContext = React.createContext<UsersContextObj>({
   setShowHeader: () => { },
   addUserRoom: () => {},
   deleteUserRoom: () => {},
+  updateUser: () => {}
 });
 
 const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
@@ -30,16 +33,18 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
   const [logedinUser, setLoggedinUser] = useState<User | null>(null);
   
   const BASE_URL = process.env.NODE_ENV !== "development" ? "/api" : "//localhost:3001/api"
-
+  const toastErr = useToastMsg(toastContent.error)
+  const toastSuccess = useToastMsg(toastContent.success)
+  
   const setUser = async (user: User | null) => {
     try {
       const { data } = await axios.put(BASE_URL + '/users', user)
       console.log(data);
-      if (!data) return
       setLoggedinUser(data)
       storageService.saveToStorage('user', data)
-      // localStorage.setItem('user', JSON.stringify(data))
+      toastSuccess.showToast()
     } catch (err) {
+      toastErr.showToast()
       console.log(err)
       
     }
@@ -49,7 +54,6 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
     const user = getUser()
     const updatedUser = {...user, chatRooms: [...user.chatRooms, newChatRoom]};
     setUser(updatedUser)
-    // return updatedUser
   }
 
   const deleteUserRoom = async (roomId: string) => {
@@ -62,6 +66,13 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const updateUser =  (name:string, email:string) => {
+    const user = getUser()
+    const updatedUser = Object.assign({}, user, {name, email})
+    console.log(updatedUser)
+    setUser(updatedUser)
   }
 
 
@@ -79,6 +90,7 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
     setShowHeader: setShowHeaderState,
     addUserRoom, 
     deleteUserRoom, 
+    updateUser
   };
 
   return (
