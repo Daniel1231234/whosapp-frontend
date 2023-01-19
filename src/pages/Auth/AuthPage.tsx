@@ -12,7 +12,7 @@ export const AuthPage = () => {
   
       return (
         <div className="auth-page pageContainer main-layout">
-          <Heading fontSize='4xl' className="auth-title">Welcome to Who's App!</Heading>
+          <Heading  textAlign="center"  fontSize='4xl' className="auth-title">Welcome to Who's App!</Heading>
           <Text textAlign="center"
             bgGradient='linear(to-l, #7928CA, #FF0080)'
             bgClip='text'

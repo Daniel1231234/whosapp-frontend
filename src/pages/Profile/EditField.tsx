@@ -8,7 +8,7 @@ type Props = {
     label:any
 
 }
-export function EditblleCh({val, onChange, label}:Props) {
+export function EditField({val, onChange, label}:Props) {
 
   return (
       <Editable
@@ -23,7 +23,7 @@ export function EditblleCh({val, onChange, label}:Props) {
 
         <label style={{fontWeight:'600', color:'darkblue'}}>{label}</label> 
         <Tooltip label="Click to edit">
-          <EditablePreview
+          <EditablePreview fontSize="1em"
             py={2}
             px={4}
             _hover={{
@@ -42,7 +42,6 @@ export function EditblleCh({val, onChange, label}:Props) {
       isEditing,
       getSubmitButtonProps,
       getCancelButtonProps,
-      getEditButtonProps
     } = useEditableControls();
 
     return isEditing ? (

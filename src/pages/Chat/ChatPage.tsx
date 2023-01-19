@@ -3,14 +3,14 @@ import { Messages } from './Messages';
 import { RoomAndUsers } from './RoomAndUsers';
 import { SendMessage } from './SendMessage';
 import { useContext, useEffect, useState } from 'react';
-import { UsersContext } from '../../store/UserContext';
 import { WebsocketContext } from '../../store/SocketContext';
 import './Chat.css'
+import { AuthContext } from '../../store/AuthContext';
 
 
 
 export const ChatPage = () => {
-  const { setShowHeader } = useContext(UsersContext)
+  const { setShowHeader } = useContext(AuthContext)
   const socket = useContext(WebsocketContext);
 
 
@@ -18,7 +18,7 @@ export const ChatPage = () => {
     setShowHeader(false)
   }, [])
 
-  useEffect(() => {}, [])
+
 
   return (
     <div className='chatContainer'>

@@ -1,5 +1,6 @@
 import { Button, FormControl, Input } from "@chakra-ui/react"
 import React, { useContext, useState } from "react"
+import { AuthContext } from "../../store/AuthContext"
 import { ChatsContext } from "../../store/ChatContext"
 import { UsersContext } from "../../store/UserContext"
 
@@ -12,8 +13,9 @@ export const NewChatRoom = (props: Props) => {
 
     const userCtx = useContext(UsersContext)
     const chatCtx = useContext(ChatsContext)
+    const {loggedinUser} = useContext(AuthContext)
 
-    const user = userCtx.user()
+    const user = loggedinUser()
 
     const createChatroom = async (e: React.FormEvent) => {
         e.preventDefault()

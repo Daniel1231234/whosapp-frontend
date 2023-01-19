@@ -28,3 +28,9 @@
 .room-options:hover {
     background-color: black;
 }
+
+@media (max-width:500px) {
+    .formContainer {
+        padding: 25px;
+    }
+}

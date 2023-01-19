@@ -1,13 +1,10 @@
-import {  Routes, Route } from "react-router-dom"
+import {  Routes, Route, useNavigate } from "react-router-dom"
 import { PrivateRoutes } from "./PrivateRoutes"
 import { PublicRoutes } from "./PublicRoutes"
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { AppHeader } from "./cmps/Header/Header"
-import { UsersContext } from "./store/UserContext"
 import { WebsocketProvider, socket } from "./store/SocketContext"
 import { AuthContext } from "./store/AuthContext"
-import { User } from "./models/User"
-import { storageService } from "./services/localStorageService"
 
 const PrivateRoutesWithWebsocket = () => {
     return (
@@ -18,18 +15,26 @@ const PrivateRoutesWithWebsocket = () => {
 };
 
 
+
 export const AppRouter = () => {    
-    const userCtx = useContext(UsersContext)
-    const user =  userCtx.user()
-    const { isAuth } = useContext(AuthContext)
-    const token = storageService.loadFromStorage('token')
+    const { loggedinUser, showHeader, token, logout } = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+     try {
+        logout()
+        navigate('/login', {replace:true})
+      } catch (err) {
+        console.log(err)
+      }
+    }
     
     return (
         <>
-            {userCtx.showHeader && <AppHeader />}
+            {showHeader && <AppHeader handleLogout={handleLogout} />}
             <Routes>
                 {
-                token && user ?
+                 loggedinUser()  && token() ?
                     <Route path="/*" element={<PrivateRoutesWithWebsocket />} /> :
                     <Route path="/*" element={<PublicRoutes />} />
                 }    

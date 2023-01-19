@@ -2,7 +2,7 @@ import { Button, FormControl,  Textarea } from "@chakra-ui/react"
 import React, { useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 import { useTypingIndicator } from "../../services/useTypingIndicator"
-import { UsersContext } from "../../store/UserContext"
+import { AuthContext } from "../../store/AuthContext"
 
 import './Chat.css'
 
@@ -12,8 +12,8 @@ type Props = {
 
 export const SendMessage = (props: Props) => {
   const [message, setMessage] = useState('')
-  const userCtx = useContext(UsersContext)
-  const user = userCtx.user()
+   const { loggedinUser } = useContext(AuthContext)
+  const user = loggedinUser()
   const {  handleStartTyping, handleStopTyping} = useTypingIndicator(props.socket);
  
   

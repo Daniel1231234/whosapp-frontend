@@ -2,10 +2,10 @@ import {  useContext, useEffect, useRef, useState } from 'react'
 import { Socket } from 'socket.io-client'
 import { MessageModel } from '../../models/Message'
 import './Chat.css'
-import { UsersContext } from '../../store/UserContext'
 import { Message } from './Message'
 import { TypingIndicator } from './TypingIndicator '
 import { useTypingIndicator } from '../../services/useTypingIndicator'
+import { AuthContext } from '../../store/AuthContext'
 
 
 type Props = {
@@ -16,8 +16,8 @@ export const Messages = (props: Props) => {
   const { currentTypingUser } = useTypingIndicator(props.socket);
   const [msgRecived, setMsgRecived] = useState<MessageModel[] | any>([])
   const messagesColumnRef = useRef<HTMLDivElement>(null);
-  const userCtx = useContext(UsersContext)
-  const user = userCtx.user()
+   const { loggedinUser } = useContext(AuthContext)
+  const user = loggedinUser()
 
 
   useEffect(() => {

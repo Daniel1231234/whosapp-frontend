@@ -1,21 +1,18 @@
 import Axios from "axios"
-// import { router } from "@/router"
 
-const BASE_URL = process.env.NODE_ENV !== "development" ? "/api" : "//localhost:3001/api"
-const axios = Axios.create({
-  withCredentials: true,
-})
+const axios = Axios.create()
+const BASE_URL = process.env.NODE_ENV !== "development" ? "/api/" : "//localhost:3001/api/"
 
 export const httpService = {
-  get(endpoint:string, data:any) {
+  get(endpoint:string, data?:any) {
     return ajax(endpoint, "GET", data)
   },
   post(endpoint:string, data:any) {
-    console.log(data)
+    console.log(data, " data - POST")
     return ajax(endpoint, "POST", data)
   },
   put(endpoint:string, data:any) {
-    console.log(data, "data")
+    console.log(data, " data - PUT")
     return ajax(endpoint, "PUT", data)
   },
   delete(endpoint:string, data:any) {
@@ -32,7 +29,7 @@ async function ajax(endpoint:string, method = "GET", data = null) {
       data,
       params: method === "GET" ? data : null,
     })
-    // console.log(res.data, "res dataa")
+    console.log(res.data, "res dataa")
     return res.data
   } catch (err:any) {
     console.log(
@@ -41,10 +38,8 @@ async function ajax(endpoint:string, method = "GET", data = null) {
     )
     console.dir(err)
     if (err.response && err.response.status === 401) {
-      // Depends on routing startegy - hash or history
-    //   window.location.assign("/#/login")
-        window.location.assign("/login")
-      //   router.push("/login")
+      console.log(err.response);
+        // window.location.assign("/login")
     }
     throw err
   }

@@ -2,26 +2,24 @@ import { Box, Button, ButtonGroup, Flex, Heading, Spacer } from '@chakra-ui/reac
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../store/AuthContext'
-import { UsersContext } from '../../store/UserContext'
 import { toastContent } from '../UI/Toast/toastContent'
 import { useToastMsg } from '../UI/Toast/useToastMsg';
 
 
 
 
-export const AppHeader = () => {
+export const AppHeader = ({handleLogout}:{handleLogout:any}) => {
     const navigate = useNavigate()
-  const {  user } = useContext(UsersContext)
+  const {loggedinUser} =  useContext(AuthContext)
    const toastSuccess = useToastMsg(toastContent.logoutSuccess)
    const toastErr = useToastMsg(toastContent.logoutErr)
-  const {logout} = useContext(AuthContext)
 
-  const userLoggedin = user()
+  const userLoggedin = loggedinUser()
  
   
-    const onLogout =  async () => {
+    const onLogout =   () => {
       try {
-        logout()
+        handleLogout()
         toastSuccess.showToast()
       } catch (err) {
         console.log(err)
@@ -29,21 +27,18 @@ export const AppHeader = () => {
       }
   }
 
-  const goProfile = () => {
-    navigate(`/user/${userLoggedin._id}`)
-  }
 
   return (
     <Flex minWidth='max-content' alignItems='center' gap='2' p="4" bg="black">
         {userLoggedin && (
           <ButtonGroup gap='2'>
           <Button size="md" onClick={onLogout} colorScheme='teal' variant="link">Sign Out</Button>
-          <Button  size="md" onClick={goProfile} colorScheme='teal'>Profile</Button>
+          <Button  size="md" onClick={() => navigate(`/profile`)} colorScheme='teal'>Profile</Button>
         </ButtonGroup>
         )}
         <Spacer />
       <Box p="2">
-        <Heading onClick={() => navigate('/')} style={{ fontFamily: 'Edu QLD Beginner, cursive', cursor:'pointer'}} size="xl" color="white">WhosApp</Heading>
+        <Heading onClick={() => navigate('/home')} style={{ fontFamily: 'Edu QLD Beginner, cursive', cursor:'pointer'}} size="xl" color="white">WhosApp</Heading>
       </Box>
     </Flex>
   )
