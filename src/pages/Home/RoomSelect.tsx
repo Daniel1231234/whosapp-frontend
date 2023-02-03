@@ -1,4 +1,4 @@
-import { Button, FormControl, Select, useDisclosure } from "@chakra-ui/react"
+import { Button, FormControl, Select, useColorMode, useDisclosure } from "@chakra-ui/react"
 import React, { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Socket } from "socket.io-client"
@@ -13,27 +13,28 @@ import './Home.css'
 type Props = {
     socket: Socket<any>
 }
-export const RoomSelect =  (props: Props) => {
+export const RoomSelect = (props: Props) => {
     const [roomId, setRoomId] = useState<string>("")
     const [roomName, setRoomName] = useState<string>("")
     const navigate = useNavigate()
-    const {deleteUserRoom, handleJoinRoom}  = useContext(UsersContext)
-    const {setShowHeader, loggedinUser} = useContext(AuthContext)
-    const deleteToastSuccess = useToastMsg({title: 'Your Chatroom has deleted successfully', status:'success'})
-    const deleteToastErr = useToastMsg({title: 'Can not removing the chat', status:'error'})
+    const { deleteUserRoom, handleJoinRoom } = useContext(UsersContext)
+    const { setShowHeader, loggedinUser } = useContext(AuthContext)
+    const deleteToastSuccess = useToastMsg({ title: 'Your Chatroom has deleted successfully', status: 'success' })
+    const deleteToastErr = useToastMsg({ title: 'Can not removing the chat', status: 'error' })
     const { isOpen, onOpen, onClose } = useDisclosure()
     const chatCtx = useContext(ChatsContext)
-    const notValidRoomToast = useToastMsg({title: 'Error!', description:'Please select a room', status:'error'})
-    
-    
-    const handleChangeRoom = (e:any) => {
+    const notValidRoomToast = useToastMsg({ title: 'Error!', description: 'Please select a room', status: 'error' })
+    const { colorMode } = useColorMode()
+
+
+    const handleChangeRoom = (e: any) => {
         console.log(e.target.value)
         setRoomId(e.target.value)
         const chosenChat = loggedinUser().chatRooms.find((r: Chat) => r._id === e.target.value)
         if (chosenChat) setRoomName(chosenChat.room)
     }
-    
-    const deleteChatRoom = async (e: any) => {        
+
+    const deleteChatRoom = async (e: any) => {
         e.preventDefault()
         onClose()
         try {
@@ -48,24 +49,21 @@ export const RoomSelect =  (props: Props) => {
     }
 
 
-    const onGoToChat =  (e: React.FormEvent) => {
+    const onGoToChat = (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            if (roomId === '') return notValidRoomToast.showToast()        
+            if (roomId === '') return notValidRoomToast.showToast()
             const chosenChat = loggedinUser().chatRooms.find((r: Chat) => r._id === roomId);
-            const updatedUser =  handleJoinRoom(chosenChat.room)                
+            const updatedUser = handleJoinRoom(chosenChat.room)
+            props.socket.emit('join_room', updatedUser);
             if (!chosenChat || !updatedUser) return console.log(chosenChat, updatedUser, ' not exist')
             const updatedChat = Object.assign({}, chosenChat, { users: [...chosenChat.users, updatedUser] })
             chatCtx.saveChatRoom(updatedChat)
-            
-            props.socket.emit('join_room', updatedUser);
-            
-            
             setShowHeader(false);
             navigate(`/chat/${roomId}`);
         } catch (err) {
             console.log(err)
-        }    
+        }
     }
 
 
@@ -73,37 +71,37 @@ export const RoomSelect =  (props: Props) => {
         title: "Delete Room Confirmation",
         body: "Are you sure you want to delete this room? This action cannot be undone."
     }
-        
+
     return (
         <>
-            <FormControl  style={{display:'flex', flexDirection:'column', gap:16, width:'100%'}}>
+            <FormControl style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
                 <Select
                     size='lg'
-                    variant='outline'
-                    color="inherit"
+                    variant='filled'
+                    colorScheme={colorMode === 'dark' ? 'whiteAlpha.200' : 'blackAlpha.200'}
                     onChange={handleChangeRoom}>
-                  <option className="room-options" value="">Choose ChatRoom</option>
-                  {loggedinUser() && loggedinUser().chatRooms?.map((room:Chat) => (
-                      <option className="room-options" key={room._id} value={room._id}>
-                          {room.room}
-                      </option>
-                  ))}
+                    <option value="">Choose ChatRoom</option>
+                    {loggedinUser() && loggedinUser().chatRooms?.map((room: Chat) => (
+                        <option style={{ color: colorMode === 'dark' ? 'white' : 'black' }} key={room._id} value={room._id}>
+                            {room.room}
+                        </option>
+                    ))}
                 </Select>
-                <Button onClick={onGoToChat}  size="lg" colorScheme='whatsapp'>Join</Button>
-            <Button onClick={() => roomName === "Public room" ? deleteToastErr.showToast() : onOpen()} size="lg" marginBottom=".5rem"
-                 colorScheme='orange'>Delete room</Button>
+                <Button onClick={onGoToChat} size="lg" colorScheme='whatsapp'>Join</Button>
+                <Button onClick={() => roomName === "Public room" ? deleteToastErr.showToast() : onOpen()} size="lg" marginBottom=".5rem"
+                    colorScheme='orange'>Delete room</Button>
             </FormControl>
-            <CustomModal 
-                modalIsOpen={isOpen} 
-                closeModal={onClose} 
+            <CustomModal
+                modalIsOpen={isOpen}
+                closeModal={onClose}
                 title={modalContent.title}
-                body={modalContent.body} 
+                body={modalContent.body}
                 onAction={deleteChatRoom}
                 actionBtnTitle={"Delete"}
             />
         </>
     )
-  
+
 }
 
 

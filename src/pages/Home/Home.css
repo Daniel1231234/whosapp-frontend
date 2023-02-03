@@ -10,8 +10,8 @@
 
 .formContainer {
     padding: 32px;
-    background-color: #393E46;
-    color: #FFEFD6;
+    /* background-color: #393E46; */
+        /* color: #FFEFD6; */
     border-radius: 10px;
     width:600px;
     max-width: 100%;
@@ -19,15 +19,6 @@
 
 
 
-.room-options {
-    color: #666;
-    font-size: 20px;
-    padding: 10px;
-}
-
-.room-options:hover {
-    background-color: black;
-}
 
 @media (max-width:500px) {
     .formContainer {

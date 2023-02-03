@@ -5,18 +5,20 @@ import userService from '../services/userService';
 import { AuthContext } from './AuthContext';
 
 
-type UsersContextObj = {
-  addUserRoom: (newChatRoom: Chat) => void
-  deleteUserRoom: (roomId: string) => any
-  handleJoinRoom: (roomName: string) => any
-  updateUserInDB: (name:string, email:string) => any
+interface UsersContextObj {
+  addUserRoom: Function
+  deleteUserRoom: Function
+  handleJoinRoom: Function
+  updateUserInDB: Function
+  handleLeaveRoom: Function
 };
 
 export const UsersContext = React.createContext<UsersContextObj>({
   addUserRoom: () => {},
   handleJoinRoom: () => {},
   deleteUserRoom: () => {},
-  updateUserInDB: () => {},
+  updateUserInDB: () => { },
+  handleLeaveRoom: () => { }
 });
 
 const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
@@ -37,8 +39,10 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
   const deleteUserRoom = async (roomId: string) => {
     try {
       const user = loggedinUser()
-      const updatedUser =  await userService.removeOneChat(user, roomId)      
-      setLoggedinUser(updatedUser)
+      const updatedUser = await userService.removeOneChat(user, roomId)
+      if (updatedUser) {
+        setLoggedinUser(updatedUser)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -48,25 +52,31 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
     try {
       const user = loggedinUser()
       const updatedUser = await userService.updateUserDetails(name, email, user)
-      setLoggedinUser(updatedUser)
+      if (updatedUser) {
+        setLoggedinUser(updatedUser)
+      }
     } catch (err) {
       console.log(err)
     }
   }
 
   const handleJoinRoom =  (roomName: string) => {
-    const user = loggedinUser()
-    if (user.room === "") {
-      console.log('joining room')
-      const joinedUser =  userService.joinRoom(user, roomName)
+    const user: User = loggedinUser()
+    const joinedUser = userService.joinRoom(user, roomName)
+    if (joinedUser) {
       setLoggedinUser(joinedUser)
-      return joinedUser
-    } else {
-      console.log('leaving room')
-      const leavingUser =  userService.leaveRoom(user)
-      setLoggedinUser(leavingUser)
-      return leavingUser
     }
+    return joinedUser
+
+  }
+
+  const handleLeaveRoom = () => {
+    const user: User = loggedinUser()
+    const leavingUser = userService.leaveRoom(user)
+    if (leavingUser) {
+      setLoggedinUser(leavingUser)
+    }
+    return leavingUser
   }
 
 
@@ -74,7 +84,8 @@ const UsersContextProvider: React.FC<{children: React.ReactNode}> = ({children})
     addUserRoom, 
     deleteUserRoom, 
     handleJoinRoom,
-    updateUserInDB
+    updateUserInDB,
+    handleLeaveRoom
   };
 
   return (

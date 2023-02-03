@@ -1,4 +1,4 @@
-.homeHeader {
+/* .homeHeader {
     height: 10vh;
     color: white;
     background-color: black;
@@ -28,4 +28,11 @@
 
 .hideHeader {
     display: none;
+}
+
+*/ @media (max-width: 600px) {
+    .small-button {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
 }

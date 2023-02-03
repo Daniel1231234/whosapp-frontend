@@ -1,10 +1,11 @@
-import {useContext, useState} from "react"
-import './Auth.css'
+import { useContext, useState } from "react"
 import { AuthContext } from "../../store/AuthContext"
 import { useToastMsg } from "../../cmps/UI/Toast/useToastMsg"
 import { toastContent } from "../../cmps/UI/Toast/toastContent"
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
+import { Button, Heading, Input, InputGroup, InputRightElement, Stack } from "@chakra-ui/react"
 import React from "react"
+import { utilService } from "../../services/utilService"
+import FormCard from "../../cmps/UI/FormCard"
 
 type Props = {
   setSignup:any
@@ -26,10 +27,11 @@ export const Signup = (props: Props) => {
   setPasswordShown(!passwordShown)
  }
 
+
   const signupHandker = async () => {
     try {
       if (email.trim() === "" || password.trim() === "" || name.trim() === "") return toastSignupErr.showToast()
-      let capitalizeName = capitalizeWords(name) 
+      let capitalizeName = utilService.capitalizeWords(name) 
       const newUser = await signUp(capitalizeName, password.toLowerCase(), email.toLowerCase())
       if (!newUser) return console.log('no new user! ', newUser)
         setEmail("")
@@ -44,53 +46,58 @@ export const Signup = (props: Props) => {
 
 
   return (
-      <div className="signup-card authContainer">
-          <Input variant='filled'
-            className="authTextbox"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full Name"
-          />
-          <Input variant='filled'
-            type="text"
-            className="authTextbox"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-          <InputGroup size="md">
-          <Input variant='filled' pr='4.5rem'
-            type={passwordShown ? 'text' : 'password'}
-            value={password}
-            className="authTextbox"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <InputRightElement width='4.5rem'>
-            <Button h='1.75rem' size='sm' onClick={handleShow}>
-              {passwordShown ? 'Hide' : 'Show'}
-            </Button>
-          </InputRightElement>
-          </InputGroup>
-          <button className="authBtn"  onClick={signupHandker}>
-            Register
-          </button>
-          <div>
-            Allready have an account? <Button variant="link" color="darkblue" onClick={() => {props.setSignup(false)}}>Login</Button> now.
-          </div>
-
-      </div>
+    <>
+      <Stack align={'center'}>
+        <Heading textAlign="center" fontSize={'1xl'}>Sign up to out service</Heading>
+      </Stack>
+      <FormCard isSignUp={true}
+        setSignup={props.setSignup}
+        name={name}
+        setName={setName}
+        actionBtn="Sign up"
+        onAction={signupHandker}
+        password={password}
+        email={email}
+        setEmail={setEmail}
+        setPassword={setPassword} />
+    </>
   )
 }
 
 
-
-
-function capitalizeWords(str:string) {
-    let words = str.split(" ");
-    for (let i = 0; i < words.length; i++) {
-        words[i] = words[i][0].toUpperCase() + words[i].slice(1);
-    }
-    return words.join(" ");
-}
+      // <div className="signup-card authContainer">
+      //     <Input variant='filled'
+      //       className="authTextbox"
+      //       type="text"
+      //       value={name}
+      //       onChange={(e) => setName(e.target.value)}
+      //       placeholder="Full Name"
+      //     />
+      //     <Input variant='filled'
+      //       type="text"
+      //       className="authTextbox"
+      //       value={email}
+      //       onChange={(e) => setEmail(e.target.value)}
+      //       placeholder="Email"
+      //     />
+      //     <InputGroup size="md">
+      //     <Input variant='filled' pr='4.5rem'
+      //       type={passwordShown ? 'text' : 'password'}
+      //       value={password}
+      //       className="authTextbox"
+      //       onChange={(e) => setPassword(e.target.value)}
+      //       placeholder="Password"
+      //     />
+      //     <InputRightElement width='4.5rem'>
+      //       <Button h='1.75rem' size='sm' onClick={handleShow}>
+      //         {passwordShown ? 'Hide' : 'Show'}
+      //       </Button>
+      //     </InputRightElement>
+      //     </InputGroup>
+      //     <button className="authBtn"  onClick={signupHandker}>
+      //       Register
+      //     </button>
+      //     <div>
+      //       Allready have an account? <Button variant="link" color="darkblue" onClick={() => {props.setSignup(false)}}>Login</Button> now.
+      //     </div>
+      // </div>

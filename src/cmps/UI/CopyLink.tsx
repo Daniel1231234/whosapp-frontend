@@ -1,24 +1,24 @@
+import { Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import './UI.css'
 interface Props {
   link: string;
 }
 
-export function CopyLink({link}: Props) {
+export function CopyLink({ link }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleClick = async (e: React.MouseEvent<HTMLHeadingElement>) => {
+  const handleClick = async () => {
     try {
       await navigator.clipboard.writeText(link);
-        setIsCopied(true)
+      setIsCopied(true)
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
   };
 
   return (
-    <h3 onClick={handleClick} className="copy-link">
+    <Button size="sm" variant="link" colorScheme="teal" onClick={handleClick}>
       {isCopied ? 'Copied!' : 'Copy invitation link'}
-    </h3>
+    </Button>
   );
 }

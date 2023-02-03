@@ -3,13 +3,13 @@ import  {Chat} from '../models/Chat';
 import chatService from '../services/chatService';
 
 
-type ChatsContextObj = {
-    createRoom: (roomName: string, createdByUserId: string) => any
-    deleteRoom: (roomId: string) => any
-    currRoom: () => any
-    setCurrRoom: (chatRoom:Chat | null) => any
-    saveChatRoom: (chatRoom:Chat) => any
-    getRoomById: (roomId:string) => any
+interface ChatsContextObj {
+    createRoom: Function
+    deleteRoom: Function
+    currRoom: Function
+    setCurrRoom: React.Dispatch<React.SetStateAction<Chat | null>>;
+    saveChatRoom: Function
+    getRoomById: Function
 };
 
 export const ChatsContext = React.createContext<ChatsContextObj>({

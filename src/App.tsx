@@ -4,10 +4,11 @@ import { GlobalContextProvider } from "./store/GlobalContextProvider ";
 
 
 function App() {
+
   return (
     <BrowserRouter>
       <GlobalContextProvider>
-          <AppRouter />
+        <AppRouter />
       </GlobalContextProvider>
     </BrowserRouter>
   );

@@ -1,28 +1,34 @@
 import { useState } from "react"
 import { Login } from "./Login"
 import { Signup } from "./Signup"
-import './Auth.css'
-import { Heading, Text } from '@chakra-ui/react'
-
+// import './Auth.css'
+import { Box, Flex, Heading, Stack, useColorModeValue } from '@chakra-ui/react'
 
 
 
 export const AuthPage = () => {
   const [signup, setSignup] = useState(false)
   
-      return (
-        <div className="auth-page pageContainer main-layout">
-          <Heading  textAlign="center"  fontSize='4xl' className="auth-title">Welcome to Who's App!</Heading>
-          <Text textAlign="center"
-            bgGradient='linear(to-l, #7928CA, #FF0080)'
-            bgClip='text'
-            fontSize='medium'
-            fontWeight='bold'
-          >{signup ? 'Sign up' : 'Log in'} to our service and start chatting!</Text>
-              {!signup && <Login setSignup={setSignup} /> }
-              {signup && <Signup setSignup={setSignup} /> }
-        </div>
+  return (
+    <Flex className="main-layout"
+      height="80vh"
+      align="center"
+      flexDir="column"
+      justify="center"
+      overflowY="auto"
+      bg={useColorModeValue('gray.50', 'gray.800')}>
+      <Box mt="10px" height="100%">
+        <Heading mt="16px" textAlign="center" fontSize='4xl'>Welcome to Who'sApp!</Heading>
+        <Stack spacing={5} mx={'auto'} maxW={'lg'} py={7} px={6}>
+          {!signup && <Login setSignup={setSignup} />}
+          {signup && <Signup setSignup={setSignup} />}
+        </Stack>
+      </Box>
+    </Flex>
       )
-    }
+}
     
+
+
+
     

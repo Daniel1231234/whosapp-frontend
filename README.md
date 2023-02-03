@@ -6,6 +6,7 @@
   <li>Public room where anyone can join</li>
   <li>Create private rooms and send invitation links to friends (joined users must login before being redirected to the chat)</li>
   <li>Ability to delete only your own messages</li>
+  <li>Ability to edit personal settings</li>
   <li>Fully responsive for mobile use</li>
 </ul>
 <h2>Getting started</h2>

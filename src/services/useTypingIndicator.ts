@@ -6,16 +6,17 @@ export const useTypingIndicator = (socket: Socket) => {
   let typingInterval: any;
   const TYPING_INTERVAL_DURATION = 3000;
   
-const handleStartTyping = (username: string) => {
-    clearInterval(typingInterval);
-    socket.emit('start_typing', username);
-    typingInterval = setInterval(() => handleStopTyping(), TYPING_INTERVAL_DURATION);
+const handleStartTyping = (username: string, room:string) => {
+  clearInterval(typingInterval);
+  // const data = {username, room}
+    socket.emit('start_typing', username, room);
+    typingInterval = setInterval(() => handleStopTyping(room), TYPING_INTERVAL_DURATION);
 };
 
-  const handleStopTyping = () => {
+  const handleStopTyping = (room:string) => {
     clearInterval(typingInterval);
     setCurrentTypingUser("")
-    socket.emit('stop_typing');
+    socket.emit('stop_typing', room);
   };
 
   useEffect(() => {

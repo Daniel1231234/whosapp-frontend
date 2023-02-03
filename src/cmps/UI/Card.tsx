@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter, Flex } from '@chakra-ui/react'
+import { Card, Flex } from '@chakra-ui/react'
 import { ReactNode } from "react"
 
 type Props = {

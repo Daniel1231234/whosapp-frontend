@@ -8,16 +8,17 @@ import { storageService } from "./localStorageService";
 async function updateUser(user:User | null) {
     try {
         const updatedUser = await httpService.put(endpoint, user)
-        console.log(updatedUser, ' BEFORE SAVING TO STORAGE')
+        // console.log(updatedUser, ' BEFORE SAVING TO STORAGE')
         storageService.saveToStorage('user', updatedUser)
     } catch (err) {
         console.log(err)
     }
 }
 
-async function removeOneChat(user: User | null | any, roomId: string) {
+async function removeOneChat(user: User | null, roomId: string) {
     try {
-        const newUserChats = user.chatRooms.filter((r: Chat) => r._id !== roomId)
+        if (!user?.chatRooms) return
+        const newUserChats = user.chatRooms.filter((r: any) => r._id !== roomId)
         const newUser = Object.assign({}, user, { chatRooms: newUserChats })
         await updateUser(newUser)
         return newUser
@@ -26,7 +27,7 @@ async function removeOneChat(user: User | null | any, roomId: string) {
      }
 }
 
- function joinRoom(user: User | null | any, roomName: string) {
+ function joinRoom(user: User | null , roomName: string) {
     try {
         const updatedUser = Object.assign({}, user, { room: roomName });
         storageService.saveToStorage('user', updatedUser)
@@ -37,9 +38,9 @@ async function removeOneChat(user: User | null | any, roomId: string) {
     }
 }
 
- function leaveRoom(user: User | null | any) {
+ function leaveRoom(user: User | null) {
     try {
-        const updatedUser = Object.assign({}, user, { lastSeen: Date.now(), room: '', lastRoom: user.room });
+        const updatedUser = Object.assign({}, user, { lastSeen: Date.now(), room:''});
         storageService.saveToStorage('user', updatedUser)
         return updatedUser
     } catch (err) {

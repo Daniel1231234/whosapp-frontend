@@ -12,11 +12,11 @@ import { storageService } from "./localStorageService";
 
 
 
-async function register (email: string, password: string | any, name: string)  {
+async function register (email: string, password: string | any, name: string):Promise<any>  {
   return await httpService.post(`${endpoint}/signup`, {email, password, name})
 };
 
-async function login(email: string, password: string | any) {
+async function login(email: string, password: string ) {
   try {
     const {userIsExist, token}:LoginResponse = await httpService.post(`${endpoint}/login`, { email, password })
     if (userIsExist) storageService.saveToStorage('user', userIsExist)
@@ -29,9 +29,8 @@ async function login(email: string, password: string | any) {
 };
 
 async function logout ()  {
-  // storageService.saveToStorage('user', null)
-  // storageService.saveToStorage('token', "")
-   sessionStorage.clear()
+ localStorage.removeItem('user')
+ localStorage.removeItem('token')
 };
 
 
@@ -39,11 +38,7 @@ function getCurrUser() {
   return storageService.loadFromStorage('user')  
 }
 
-function authData() {
-  const user = storageService.loadFromStorage('user')  
-  const token = storageService.loadFromStorage('token')
-  return {user,token}
-}
+
 
 
 const authService = {
@@ -51,7 +46,6 @@ const authService = {
   login,
   logout,
   getCurrUser,
-  authData
 };
 
 export default authService;

@@ -13,7 +13,7 @@ export const NewChatRoom = (props: Props) => {
 
     const userCtx = useContext(UsersContext)
     const chatCtx = useContext(ChatsContext)
-    const {loggedinUser} = useContext(AuthContext)
+    const { loggedinUser } = useContext(AuthContext)
 
     const user = loggedinUser()
 
@@ -30,20 +30,22 @@ export const NewChatRoom = (props: Props) => {
 
     }
 
-  return (
-      <FormControl
-          onSubmit={createChatroom}
-          display="flex"
-          flexDirection="column"
-          gap="1rem">
-            <h3 style={{textAlign:'center', fontSize:'1.5rem', fontWeight:'700'}}>Create new chat </h3>
-          <Input
-              size="lg"
-              type="text"
-              id="room"
-              onChange={(e) => setRoomName(e.target.value)}
-              placeholder="Type the new chat name here..." />
+    return (
+        <FormControl
+            onSubmit={createChatroom}
+            display="flex"
+            flexDirection="column"
+            gap="1rem">
+            <h3 style={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: '700' }}>Create new chat </h3>
+            <Input
+                size="lg"
+                colorScheme="whiteAlpha.200"
+                variant='filled'
+                type="text"
+                id="room"
+                onChange={(e) => setRoomName(e.target.value)}
+                placeholder="Type the new chat name here..." />
             <Button onClick={createChatroom} colorScheme='messenger'>Submit</Button>
         </FormControl>
-  )
+    )
 }

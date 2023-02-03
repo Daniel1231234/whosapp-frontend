@@ -1,5 +1,8 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { useEditableControls, ButtonGroup, IconButton, Editable, Tooltip, EditablePreview, useColorModeValue, Input, EditableInput, TagLabel } from "@chakra-ui/react";
+import {
+  useEditableControls,
+  ButtonGroup, IconButton, Editable, Tooltip, EditablePreview, useColorModeValue, Input, EditableInput, Box
+} from "@chakra-ui/react";
 
 
 type Props = {
@@ -21,7 +24,7 @@ export function EditField({val, onChange, label}:Props) {
         onChange={onChange}
       >
 
-        <label style={{fontWeight:'600', color:'darkblue'}}>{label}</label> 
+        <Box fontWeight="bold">{label}</Box> 
         <Tooltip label="Click to edit">
           <EditablePreview fontSize="1em"
             py={2}
